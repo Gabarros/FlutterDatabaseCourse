@@ -12,7 +12,7 @@ class Dashboard extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/bytebank_logo'),
+            child: Image.asset('assets/bytebank_logo.png'),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
