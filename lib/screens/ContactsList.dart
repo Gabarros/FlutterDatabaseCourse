@@ -4,26 +4,47 @@ import 'package:newbytebank/models/Contact.dart';
 import 'package:newbytebank/screens/ContactForm.dart';
 
 class ContactsList extends StatelessWidget {
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Contacts'),
       ),
-      body: FutureBuilder(
-        future: findAll(),
+      body: FutureBuilder<List<Contact>>(
+        initialData: List(),
         builder: (context, snapshot) {
-          
-          final List<Contact> contacts = snapshot.data;
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    CircularProgressIndicator(),
+                    Text(
+                      'Loading...',
+                      style: TextStyle(fontSize: 24.0),
+                    ),
+                  ],
+                ),
+              );
+              break;
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+              final List<Contact> contacts = snapshot.data;
+              return ListView.builder(
+                itemCount: contacts.length,
+                itemBuilder: (context, index) {
+                  return _ContactItem(contacts[index]);
+                },
+              );
+              break;
+          }
 
-          return ListView.builder(
-            itemCount: contacts.length,
-            itemBuilder: (context, index) {
-              return _ContactItem(contacts[index]);
-            },
-          );
+          return Text('Unknown Error ');
         },
       ),
       floatingActionButton: FloatingActionButton(
